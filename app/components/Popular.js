@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {fetchPopularRepos} from '../utils/api.js'
 import {FaUser, FaStar, FaCodeBranch, FaExclamationTriangle} from 'react-icons/fa'
+import Card from './Card'
 
 
 function LanguagesNav ({selected, onUpdateLanguage, repos, error}){
@@ -36,19 +37,12 @@ function ReposGrid ({repos}) {
                 const {login, avatar_url} = owner
 
                 return (
-                    <li key={html_url} className='repo bg-light'>
-                        <h4 className='header-lg center-text'>
-                            #{i+1}
-                        </h4>
-                        <img
-                            className='avatar'
-                            src={avatar_url}
-                            alt={`Avatar of ${login}`}
-                        />
-                        <h2 className='center-text'>
-                            <a href={html_url} className='link'>{login}</a>
-                        </h2>
-
+                    <Card
+                        header={`#${i+1}`}
+                        avatar={avatar_url}
+                        href={html_url}
+                        name={login}
+                    >
                         <ul className='card-list'>
                             <li>
                                 <FaUser color='rgb(255,191,116)' size={22} />
@@ -69,7 +63,8 @@ function ReposGrid ({repos}) {
                                 {open_issues.toLocaleString()} open issues
                             </li>
                         </ul>
-                    </li>
+                    </Card>
+                   
                 )
             })}
         </ul>
@@ -148,7 +143,7 @@ export default class Popular extends React.Component {
                 
                 {this.isLoading() && <p>LOADING...</p>}
 
-                {error && <p>{error}</p>}
+                {error && <p className="center-text-error">{error}</p>}
 
                 {repos[selectedLanguage] && <ReposGrid repos={repos[selectedLanguage]}/>}
             </React.Fragment>
